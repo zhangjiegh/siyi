@@ -213,6 +213,7 @@ function getHours() {
             position : 'bottom',
             splitNumber : 5,
             axisLabel : {
+                margin:20,
                 interval : false,
                 formatter : function(value, index) {
                     // 格式化成月/日，只在第一个刻度显示年份
@@ -399,7 +400,11 @@ function getDay() {
         xAxis: {
             type: 'category',
             data: dates,
-            axisLine: {lineStyle: {color: '#8392A5'}}
+            axisLabel:{
+                margin:20,
+            },
+            axisLine: {
+                lineStyle: {color: '#8392A5'}}
         },
         yAxis: {
             scale: true,

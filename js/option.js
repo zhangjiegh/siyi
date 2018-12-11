@@ -22,8 +22,8 @@ window.onload = function() {
 };
 
 function getTop1() {
-    var data=[{value:40, name:'直接访问', itemStyle:{normal:{color:'#FF781B'}}},
-        {value:60, name:'邮件营销', itemStyle:{normal:{color:'#ff3f12'}}}
+    var data=[{value:40, name:'直接访问', itemStyle:{normal:{color:'#ED881B'}}},
+        {value:60, name:'邮件营销', itemStyle:{normal:{color:'#8a4f10'}}}
     ]
 
 
@@ -73,8 +73,8 @@ function getTop1() {
 }
 
 function getTop2() {
-    var data=[{value:335, name:'直接访问', itemStyle:{normal:{color:'#ff6187'}}},
-        {value:310, name:'邮件营销', itemStyle:{normal:{color:'#FF0B52'}}}
+    var data=[{value:335, name:'直接访问', itemStyle:{normal:{color:'#f66a65'}}},
+        {value:310, name:'邮件营销', itemStyle:{normal:{color:'#9d4643'}}}
         ]
     var a=0;
     for(var i=0; i<data.length; i++) {
@@ -93,7 +93,6 @@ function getTop2() {
             }
 
         },
-
         series : [
             {
                 name: '访问来源',
@@ -137,7 +136,7 @@ function getHours() {
     for (var i = 0; i < 288; i++) {
         time = Number(times + i * 300);
         time = getLocalTime(time);
-        price = oldprice + (Math.random() * 0.5 - Math.random() * 0.5);
+        price = Math.max(oldprice + (Math.random() * 0.5 - Math.random() * 0.5),0.01);
 
         oldprice = price;
         items = {
@@ -175,6 +174,7 @@ function getHours() {
     } else {
         maxValue = lastClose + (lastClose - minValue);
     }
+    minValue = Math.max(minValue,0.01);
     // 获取y轴间隔
     if (maxValue == minValue) {
         maxValue = maxValue * 1.1;
@@ -206,21 +206,32 @@ function getHours() {
             right:40,
         },
         xAxis: {
-            type: 'time',
-            tickWitth: 0,
-            splitLine: {
-                show: false
+            type : 'time',
+            splitLine : {
+                show : false
             },
-            show: true,
-            splitNumber: 5,
+            position : 'bottom',
+            splitNumber : 5,
+            axisLabel : {
+                interval : false,
+                formatter : function(value, index) {
+                    // 格式化成月/日，只在第一个刻度显示年份
+                    var date = new Date(value);
+                    date = date.Format('hh:mm');
+                    if (index > 0 && date == '23:59') {
+                        date = "24:00";
+                    }
+                    return date;
+                }
+            }
         },
         yAxis: [
             {
-                type: 'value',
-                position: 'left',
-                max: maxValue,
-                min: minValue,
-                interval:yAxisSpan,
+                type : 'value',
+                position : 'left',
+                max : maxValue,
+                min : minValue,
+                interval : yAxisSpan,
                 splitLine: {
                     show: true,
                     interval:yAxisSpan,
@@ -247,7 +258,7 @@ function getHours() {
                     }
                 }
             },
-         ],
+        ],
         series: [{
             name: '模拟数据',
             type: 'line',

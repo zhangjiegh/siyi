@@ -146,6 +146,8 @@
 .time-select div {
     display: inline-block;
     padding: 9px 17px;
+    width: 70px;
+    text-align: center;
     font-size: 16px;
     color: #999999;
     letter-spacing: 2px;
@@ -174,7 +176,7 @@
 
 .chart-views {
     position: relative;
-    margin-top: 110px;
+    margin-top: 40px;
     height: 752px;
 }
 .chart-views div {
@@ -213,4 +215,53 @@
 .chart-views .remark>div img {
     margin-top: -3px;
     vertical-align: middle;
+}
+
+.item-message{
+    margin-left: 34px;
+    margin-top: 24px;
+}
+.item-message>div:nth-of-type(1){
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #898888;
+    letter-spacing: 2.18px;
+}
+
+.item-message>div:nth-of-type(2){
+    margin-top: 9px;
+    font-family: DIN-Regular;
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 2.18px;
+}
+
+.message {
+    height: 99px;
+    align-items: center;
+    font-size: 24px;
+    color: #666666;
+    width: 1199px;
+    background: #F0F0F0;
+    margin: 36px 0 44px 0;
+    display: flex;
+    flex-direction: row
+}
+
+.message > img{
+    margin-left: 8px;
+}
+.message-t1 {
+    color: #000000;
+    margin-left: 10px;
+}
+.message-t2{
+    margin-left: 26px;
+    font-size: 22px;
+}
+.message-t2 >span{
+   color: #3fe13f;
+}
+.message-t3{
+    margin-left: 32px;
 }

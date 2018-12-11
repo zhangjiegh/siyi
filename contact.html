@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>四一官网</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/contact.css">
+</head>
+<body>
+    <div class="header-bg">
+        <div class="header">
+            <div class="header-logo">
+                <img src="./img/nav_logo.png" alt="logo">
+            </div>
+            <ul class="nav">
+                <li><a href="./index.html">首页</a></li>
+                <li><a href="./activity.html">活动</a></li>
+                <li><a href="./nav.html">导航</a></li>
+                <li><a href="./airdrop.html">空投</a></li>
+                <li class="active"><a href="./contact.html">联系我们</a></li>
+            </ul>
+            <div class="login-register">
+                <div class="icon"></div>
+                <a href="javascript:;" id="login">登录</a>
+                <div class="separate"></div>
+                <a href="javascript:;" id="register">注册</a>
+            </div>
+        </div>
+    </div>
+    <div class="banner">
+        <img src="./img/background_contactus.png" alt="background_contactus">
+    </div>
+    <div id="main">
+        <div class="content">
+            <h2>
+                <span>We Want</span>
+                <div style="display: inline-block;width: 811px;height: 1px;vertical-align: middle;margin-left: 15px;background: #f0f0f0;"></div>
+            </h2>
+            <div class="post">
+                <div>区块链工程师</div>
+                <div>高级Java</div>
+                <div>区块链运营</div>
+                <div>文案策划</div>
+            </div>
+            <h2>
+                <span>Contact Us</span>
+                <div style="display: inline-block;width: 758px;height: 1px;vertical-align: middle;margin-left: 15px;background: #f0f0f0;"></div>
+            </h2>
+            <ul class="contact">
+                <li>
+                    <div class="icon"></div>
+                    <span>QQ：</span>1541735644
+                </li>
+                <li>
+                    <div class="icon"></div>
+                    <span>E-Mail：</span>1541735644@qq.com
+                </li>
+                <li>
+                    <div class="icon"></div>
+                    <span>WeChat：</span>Fourone41_
+                </li>
+                <div class="qrcode">
+                    <img src="./img/contactus_link.png" alt="contactus_link">
+                    <div>公众号下载链接</div>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="content">
+            <div class="logos">
+                <a href="#">
+                    <img src="./img/footer_logo.png" alt="footer_logo">
+                </a>
+                <a href="#">
+                    <img src="./img/footer_vipcn.png" alt="footer_logo">
+                </a>
+                <a href="#">
+                    <img src="./img/footer_weixin.png" alt="footer_logo">
+                </a>
+                <a href="#">
+                    <img src="./img/footer_weibo.png" alt="footer_logo">
+                </a>
+                <a href="#">
+                    <img src="./img/footer_qq.png" alt="footer_logo">
+                </a>
+            </div>
+            <div class="address">
+                公司地址：广州市天河区五山路金山大厦南塔303-304 2018
+            </div>
+            <div class="website">
+                <a href="https://www.41caijing.com/">https://www.41caijing.com/</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册登录弹窗 -->
+    <div id="success-msg">
+        <div>
+            <img src="./img/registerandlogin_succeed .png" alt="registerandlogin_succeed">
+            注册成功！
+        </div>
+    </div>
+    <div id="model">
+        <div class="container">
+            <img class="close-model" src="./img/close_model.png" alt="close_model">
+            <div class="model-tabs">
+                <div class="active">登录</div>
+                <div>注册</div>
+            </div>
+            <div class="model-views">
+                <div class="model-view login-view active">
+                    <div class="err-msg"></div>
+                    <div class="form-control user">
+                        <input type="text" placeholder="请输入手机号码或邮箱">
+                        <!-- <div class="close-icon"></div> -->
+                    </div>
+                    <div class="form-control pass">
+                        <input type="password" placeholder="请输入密码">
+                        <!-- <div class="close-icon"></div> -->
+                    </div>
+                    <button class="login disable">登录</button>
+                    <a href="#">忘记密码</a>
+                </div>
+                <div class="model-view register-view">
+                    <div class="form-control user">
+                        <input type="text" placeholder="账号">
+                    </div>
+                    <div class="form-control captchae">
+                        <input type="text" placeholder="验证码">
+                        <span>获取验证码</span>
+                    </div>
+                    <div class="form-control pass">
+                        <input type="text" placeholder="设置密码">
+                    </div>
+                    <div class="form-control confirm-pass">
+                        <input type="text" placeholder="确认密码">
+                    </div>
+                    <div class="form-control invite-code">
+                        <input type="text" placeholder="邀请码">
+                    </div>
+                    <button class="register disable">注册</button>
+                    <div class="agreement">
+                        <img src="./img/register_unselected.png" alt="register">
+                        我已阅读并同意《用户协定》
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./lib/jquery.min.js"></script>
+    <script src="./js/common.js"></script>
+</body>
+</html>

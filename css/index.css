@@ -1,0 +1,126 @@
+@import url("../lib/bootstrap/bootstrap.min.css");
+@import url("../lib/bootstrap/bootstrap-table.min.css");
+
+.banner {
+    width: 100%;
+}
+.banner img {
+    width: 100%;
+}
+
+.bitcoin {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 160px;
+    background: #ffffff;
+    transform: translateY(-50%);
+    box-shadow: 0px 1px 25px #cccccc;
+}
+.bitcoin .separate {
+    width: 0;
+    height: 87.3px;
+    border-right: 1px solid #f0f0f0;
+}
+.bitcoin li {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.bitcoin .icon {
+    margin-right: 5px;
+    width: 43px;
+    height: 43px;
+    background-image: url('../img/bitcoin.png');
+    background-size: 100%;
+}
+.bitcoin .content {
+    font-size: 18px;
+    letter-spacing: 0.12px;
+}
+.bitcoin .content .money {
+    color: #999999;
+}
+.bitcoin .person {
+    margin-left: 30px;
+    width: 60px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #ffffff;
+}
+.bitcoin .person.up {
+    background: #38E038;
+}
+.bitcoin .person.down {
+    background: #F66A65;
+}
+
+.tabs {
+    width: 100%;
+    height: 80px;
+    background-color: #f0f0f0;
+    font-size: 0;
+    margin-bottom: 20px;
+}
+.tabs li {
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 80px;
+    font-size: 16px;
+    letter-spacing: 2.29px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+.tabs li:hover, .tabs li.active {
+    background-color: #fff;
+}
+.tabs li:hover::before, .tabs li.active::before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #EDB11B;
+}
+
+.tab-views .view {
+    display: none;
+    min-height: 800px;
+    position: relative;
+}
+.tab-views .view.active {
+    display: block;
+}
+
+.view-1 .content {
+    width: 200px;
+    height: 330px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+.view-1 .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+.view-1 button {
+    width: 160px;
+    height: 40px;
+    background: #F66A65;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #FEFEFE;
+    letter-spacing: 2px;
+    text-align: center;
+}

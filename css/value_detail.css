@@ -1,0 +1,188 @@
+.banner {
+    height: 450px;
+    background-image: url("../img/background1.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.banner .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 43px 0;
+    box-sizing: border-box;
+}
+.banner .content .info {
+    flex: 1;
+    margin-right: 88px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.banner .content .info .title {
+    display: flex;
+    margin-bottom: 25px;
+}
+.banner .content .info .title img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+.banner .content .info .title .transaction-pairs {
+    flex: 1;
+}
+.banner .content .info .title .transaction-pairs .name {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 2.18px;
+}
+.banner .content .info .title .transaction-pairs .range {
+    font-size: 16px;
+    color: #666666;
+    letter-spacing: 2px;
+}
+.banner .content .info .title .transaction-pairs .code41 {
+    font-size: 16px;
+    color: #CCCACA;
+    letter-spacing: 2px;
+}
+.banner .content .info .money .num {
+    margin-right: 10px;
+    font-size: 36px;
+    color: #FFFFFF;
+    letter-spacing: 3.12px;
+}
+.banner .content .info .money .percent {
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 4px;
+    vertical-align: text-bottom;
+    font-size: 18px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+}
+.banner .content .info .money .percent.up {
+    background: #F66A65;
+}
+.banner .content .info .money .percent.down {
+    background: #38E038;
+}
+.banner .content .info .star {
+    margin-top: 10px;
+    margin-left: 5px;
+    display: inline-block;
+    width: 25px;
+    height: 24px;
+    background-image: url("../img/home_currencydetails_starlevel2.png");
+}
+.banner .content .info .separate {
+    margin: 40px 0 22px;
+    width: 162.5px;
+    height: 1px;
+    background-color: #494848 ;
+}
+.banner .content .info .foot {
+    display: flex;
+    justify-content: space-between;
+}
+.banner .content .info .foot .h24 {
+    flex: 1;
+    font-size: 20px;
+    color: #A1A1A1;
+    letter-spacing: 2px;
+    line-height: 28px;
+}
+.banner .content .info .foot .optional {
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #F66A65;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #FEFEFE;
+    letter-spacing: 2px;
+    text-align: center;
+    /* cursor: pointer; */
+}
+
+.banner .content .item-1, .banner .content .item-2 {
+    margin: 20px;
+    width: 300px;
+    height: 364px;
+    background-color: #2D2C2C;
+}
+.banner .content .item-content {
+    margin-top: 25px;
+    margin-left: 34px;
+}
+.banner .content .item-content .text {
+    font-size: 16px;
+    color: #898888;
+    letter-spacing: 2.18px;
+}
+.banner .content .item-content .money {
+    margin-top: 13px;
+    margin-left: 34px;
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 2.18px;
+}
+
+#main .title {
+    margin-top: 62px;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #190A06;
+    letter-spacing: 2.55px;
+}
+.time-select div {
+    display: inline-block;
+    padding: 9px 17px;
+    font-size: 16px;
+    color: #999999;
+    letter-spacing: 2px;
+    background: #F0F0F0;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.time-select div.active {
+    background: #EDB41B;
+    color: #FFFFFF;
+}
+
+.toptext {
+    width: 100px;
+    height: 46px;
+    font-size: 22px;
+    line-height: 22px;
+    margin: auto;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.chart-views {
+    position: relative;
+    margin-top: 110px;
+    height: 752px;
+}
+.chart-views div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.chart-views div.active {
+    z-index: 10;
+}

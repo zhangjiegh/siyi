@@ -53,6 +53,8 @@ $('.tabs li').on('click', function () {
 
 $('#view-2').bootstrapTable({
     pagination: true,
+    paginationPreText: '<img src="./img/home_previouspage.png" />',
+    paginationNextText: '<img src="./img/home_nextpage.png" />',
     pageNumber: 1,
     pageSize: 15,
     striped: true,
@@ -62,6 +64,8 @@ $('#view-2').bootstrapTable({
 
 $('#view-3').bootstrapTable({
     pagination: true,
+    paginationPreText: '<img src="./img/home_previouspage.png" />',
+    paginationNextText: '<img src="./img/home_nextpage.png" />',
     pageNumber: 1,
     pageSize: 15,
     striped: true,

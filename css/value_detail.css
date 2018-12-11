@@ -186,3 +186,31 @@
 .chart-views div.active {
     z-index: 10;
 }
+
+.chart-views .remark {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    color: #90959b80;
+    z-index: 100;
+    width: 900px;
+    font-size: 22px;
+}
+/* .chart-views .remark .icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-image: url("../img/close.png");
+    background: no-repeat;
+} */
+.chart-views .remark .top {
+    color: #90959b;
+    font-size: 26px;
+}
+.chart-views .remark>div {
+    position: absolute;
+}
+.chart-views .remark>div img {
+    margin-top: -3px;
+    vertical-align: middle;
+}

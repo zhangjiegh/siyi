@@ -124,7 +124,7 @@ function getTop2() {
 function getHours() {
     var lastClose = 5;
     var times = 1526054400;
-    var oldprice = 5;
+    var oldprice = 5; // TODO 今天开盘价
     var maxValue = 0;// 最高价
     var minValue = 99999999999;// 最低价
     var highColor = '#FF0000';// 上涨颜色
@@ -175,7 +175,7 @@ function getHours() {
     } else {
         maxValue = lastClose + (lastClose - minValue);
     }
-    minValue = Math.max(minValue,0.01);
+    minValue = Math.max(minValue,0.01); // TODO 不一定需要
     // 获取y轴间隔
     if (maxValue == minValue) {
         maxValue = maxValue * 1.1;
@@ -183,7 +183,8 @@ function getHours() {
     }
     var yAxisSpan = (maxValue - minValue) / (yAxisNum - 1);
     // 获取金额数组
-    var data = ktimeArray;
+    var data = ktimeArray; //TODO 需要的数组
+    console.log(data);
     var option = {
         backgroundColor: '#ffffff',
         tooltip: {

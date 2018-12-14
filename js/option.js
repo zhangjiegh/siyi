@@ -21,18 +21,6 @@ var top1Chart = echarts.init(top1Div, null, {renderer: 'svg'});
 var top2Div = document.getElementById('top2Div');
 var top2Chart = echarts.init(top2Div, null, {renderer: 'svg'});
 
-window.onload = function() {
-
-
-    getHours();
-    getDay();
-    getTop1();
-    getTop2();
-    getDay3();
-    getDay4();
-    getDay5();
-    getDay6();
-};
 
 function getTop1() {
     var data=[{value:40, name:'直接访问', itemStyle:{normal:{color:'#ED881B'}}},

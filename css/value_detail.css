@@ -1,8 +1,4 @@
 
-*{
-    font-family: DIN-Regular;
-}
-
 .banner {
     height: 450px;
     background-image: url("../img/background1.png");
@@ -188,8 +184,13 @@
     position: absolute;
     top: 0;
     left: 0;
+<<<<<<< HEAD
     /* z-index: -1; */
     display: none;
+=======
+    z-index: -1;
+    background: #ffffff;
+>>>>>>> 4ea665a931166d31aafdae1b70d52996da8f6776
 }
 .chart-views .chart-view.active {
     /* z-index: 10; */

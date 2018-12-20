@@ -127,12 +127,22 @@
             <div>1mon</div>
         </div>
         <div class="chart-views">
+<<<<<<< HEAD
             <div class="chart-view active">
                 <div id="hoursDiv" style="height:600px;width: 1200px;"></div>
             </div>
             <div class="chart-view">
                 <div id="dayDiv" style="height:600px;width: 1200px;"></div>
             </div>
+=======
+
+            <div id="hoursDiv" class="active" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv3" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv4" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv5" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv6" style="height:600px;width: 1200px;"></div>
+>>>>>>> 4ea665a931166d31aafdae1b70d52996da8f6776
         </div>
     </div>
     <div class="footer">
@@ -257,11 +267,34 @@
             });
         }
         rangeStar(3);
-        
+
+        getTop1();
+        getTop2();
+        getHours();
         $('#main .time-select>div').on('click', function () {
             $(this).addClass('active').siblings('div').removeClass('active');
             var index = $(this).index();
             $('.chart-views>div').eq(index).addClass('active').siblings('div').removeClass('active');
+            switch (index) {
+                case 0:
+                    getHours();
+                    break;
+                case 1:
+                    getDay();
+                    break;
+                case 2:
+                    getDay3();
+                    break;
+                case 3:
+                    getDay4();
+                    break;
+                case 4:
+                    getDay5();
+                    break;
+                case 5:
+                    getDay6();
+                    break;
+            }
         });
     </script>
 </body>

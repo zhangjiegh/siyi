@@ -91,14 +91,14 @@ function getTop1() {
 }
 
 function getTop2() {
-    var data=[{value:335, name:'直接访问', itemStyle:{normal:{color:'#f66a65'}}},
-        {value:310, name:'邮件营销', itemStyle:{normal:{color:'#9d4643'}}}
+    var data2=[{value:100, name:'直接访问', itemStyle:{normal:{color:'#f66a65'}}},
+        {value:100, name:'邮件营销', itemStyle:{normal:{color:'#9d4643'}}}
         ]
     var a=0;
-    for(var i=0; i<data.length; i++) {
-        a+=data[i].value;
+    for(var i=0; i<data2.length; i++) {
+        a+=data2[i].value;
     }
-    data.push({value:a, name:'__other', itemStyle:{normal:{color:'rgba(0,0,0,0)'}}});
+    data2.push({value:a, name:'__other', itemStyle:{normal:{color:'rgba(0,0,0,0)'}}});
     var option4 = {
         tooltip : {
             trigger: 'item',
@@ -118,7 +118,7 @@ function getTop2() {
                 startAngle:180,
                 radius: ['50%', '70%'],
                 center: ['50%', '56%'],
-                data:data,
+                data:data2,
                 label: {
                     normal: {
                         show: false,
@@ -138,6 +138,9 @@ function getTop2() {
     }
 
 }
+
+
+
 function getHours() {
     var lastClose = 5;
     var times = 1526054400;
@@ -437,7 +440,9 @@ function getDay() {
             right:40,
         },
         dataZoom: [{
-            type: 'inside'
+            type: 'inside',
+            start: 50,
+            end: 100
         }],
         animation: false,
         series: [
@@ -506,6 +511,12 @@ function getDay() {
     };
     if (option2 && typeof option2 === "object") {
         dayDivChart.setOption(option2, true);
+        dayDivChart.on('datazoom', function (param) {
+            console.log(param);
+            console.log("==============");
+            console.log(param.batch[0].start);
+            console.log(param.batch[0].end);
+        });
     }
 }
 function getDay3() {

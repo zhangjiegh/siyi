@@ -146,8 +146,8 @@
 }
 .time-select div {
     display: inline-block;
-    padding: 9px 17px;
-    width: 70px;
+    padding: 9px 0px;
+    width: 104px;
     text-align: center;
     font-size: 16px;
     color: #999999;
@@ -184,13 +184,8 @@
     position: absolute;
     top: 0;
     left: 0;
-<<<<<<< HEAD
-    /* z-index: -1; */
     display: none;
-=======
-    z-index: -1;
-    background: #ffffff;
->>>>>>> 4ea665a931166d31aafdae1b70d52996da8f6776
+
 }
 .chart-views .chart-view.active {
     /* z-index: 10; */

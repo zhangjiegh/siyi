@@ -127,22 +127,16 @@
             <div>1mon</div>
         </div>
         <div class="chart-views">
-<<<<<<< HEAD
-            <div class="chart-view active">
-                <div id="hoursDiv" style="height:600px;width: 1200px;"></div>
-            </div>
-            <div class="chart-view">
-                <div id="dayDiv" style="height:600px;width: 1200px;"></div>
-            </div>
-=======
 
             <div id="hoursDiv" class="active" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv3" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv4" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv5" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv6" style="height:600px;width: 1200px;"></div>
->>>>>>> 4ea665a931166d31aafdae1b70d52996da8f6776
+            <div id="dayDiv"  class="chart-view"  style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv3" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv4" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv5" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv6" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv7" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv8" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv9" class="chart-view" style="height:600px;width: 1200px;"></div>
         </div>
     </div>
     <div class="footer">
@@ -271,6 +265,8 @@
         getTop1();
         getTop2();
         getHours();
+
+
         $('#main .time-select>div').on('click', function () {
             $(this).addClass('active').siblings('div').removeClass('active');
             var index = $(this).index();
@@ -293,6 +289,15 @@
                     break;
                 case 5:
                     getDay6();
+                    break;
+                case 6:
+                    getDay7();
+                    break;
+                case 7:
+                    getDay8();
+                    break;
+                case 8:
+                    getDay9();
                     break;
             }
         });

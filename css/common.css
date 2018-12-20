@@ -1,3 +1,4 @@
+@import url("../lib/bootstrap/bootstrap.min.css");
 @import url("../lib/jqueryPagination/jquery.pagination.css");
 @import url("./reset.css");
 @font-face {
@@ -7,7 +8,7 @@
 
 body {
     background-color: #fafafa;
-    font-family: DIN-Regular, -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-family: DIN-Regular, -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
 }
 
 .header-bg {
@@ -63,6 +64,7 @@ body {
 .login-register .icon {
     display: inline-block;
     margin-top: -3px;
+    margin-right: 10px;
     width: 18px;
     height: 20px;
     vertical-align: middle;
@@ -109,10 +111,10 @@ body {
     color: #F0F0F0;
 }
 
-#pagination {
+#pagination, #pagination-article {
     float: right;
 }
-#pagination .prev {
+#pagination .prev, #pagination-article .prev {
     display: inline-block;
     width: 7px;
     height: 13px;
@@ -122,7 +124,7 @@ body {
     vertical-align: middle;
     margin-top: -3px;
 }
-#pagination .next {
+#pagination .next, #pagination-article .next {
     display: inline-block;
     width: 7px;
     height: 13px;
@@ -200,7 +202,7 @@ body {
     background-color: #D8D8D8;
 }
 
-#model, #success-msg {
+#model, #success-msg, #forgot-pass {
     position: fixed;
     top: 0;
     left: 0;
@@ -209,7 +211,7 @@ body {
     height: 100%;
     background: rgba(0,0,0,0.30);
 }
-#model .container {
+#model .container, #forgot-pass .container {
     position: absolute;
     top: 0;
     left: 0;
@@ -237,19 +239,24 @@ body {
 #success-msg>div img {
     margin-right: 21px;
 }
-#model .container {
+#model .container, #forgot-pass .container {
     padding: 0;
 }
-#model .container .close-model {
+#model .container .close-model, #forgot-pass .container .close-model {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
 }
-#model .container .model-tabs {
+#model .container .model-tabs, #forgot-pass .container .model-tabs {
     display: flex;
 }
-#model .container .model-tabs>div {
+#forgot-pass .container .model-tabs h3 {
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+}
+#model .container .model-tabs>div, #forgot-pass .container .model-tabs>div {
     flex: 1;
     height: 89px;
     line-height: 89px;
@@ -257,7 +264,7 @@ body {
     cursor: pointer;
     border-bottom: 2px solid transparent;
 }
-#model .container .model-tabs>div.active {
+#model .container .model-tabs>div.active, #forgot-pass .container .model-tabs>div.active {
     border-bottom-color: #EDB11B;
 }
 #model .container .model-views .model-view {
@@ -265,7 +272,12 @@ body {
     display: none;
     position: relative;
 }
-#model .container .model-views .model-view .err-msg {
+#forgot-pass .container .model-views .model-view {
+    margin: 50px 60px;
+    display: none;
+    position: relative;
+}
+#model .container .model-views .model-view .err-msg, #forgot-pass .container .model-views .model-view .err-msg {
     position: absolute;
     top: -36px;
     left: 0;
@@ -273,18 +285,18 @@ body {
     color: #F66A65;
     letter-spacing: 0.12px;
 }
-#model .container .model-views .model-view.active {
+#model .container .model-views .model-view.active, #forgot-pass .container .model-views .model-view.active {
     display: block;
 }
-#model .container .model-views .model-view .form-control {
+#model .container .model-views .model-view .form-control, #forgot-pass .container .model-views .model-view .form-control {
     position: relative;
-    width: 349px;
+    width: 394px;
     height: 48px;
     margin-bottom: 16px;
     background: #F0F0F0;
     border: 1px solid rgb(206, 212, 218);
 }
-#model .container .model-views .model-view .form-control input {
+#model .container .model-views .model-view .form-control input, #forgot-pass .container .model-views .model-view .form-control input {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -297,10 +309,10 @@ body {
     background: #F0F0F0;
     padding: 0 18px;
 }
-#model .container .model-views .model-view .close-icon {
+#model .container .model-views .model-view .close-icon, #forgot-pass .container .model-views .model-view .close-icon {
     display: none;
 }
-#model .container .model-views .model-view .close-icon::after {
+#model .container .model-views .model-view .close-icon::after, #forgot-pass .container .model-views .model-view .close-icon::after {
     content: "";
     display: block;
     width: 24px;
@@ -312,23 +324,28 @@ body {
     right: 11px;
     cursor: pointer;
 }
-#model .container .model-views .model-view .form-control ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+#model .container .model-views .model-view .form-control ::-webkit-input-placeholder,
+#forgot-pass .container .model-views .model-view .form-control ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color: #999999;
 }
-#model .container .model-views .model-view .form-control :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+#model .container .model-views .model-view .form-control :-moz-placeholder,
+#forgot-pass .container .model-views .model-view .form-control :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
    color: #999999;
 }
-#model .container .model-views .model-view .form-control ::-moz-placeholder { /* Mozilla Firefox 19+ */
+#model .container .model-views .model-view .form-control ::-moz-placeholder,
+#forgot-pass .container .model-views .model-view .form-control ::-moz-placeholder { /* Mozilla Firefox 19+ */
    color: #999999;
 }
-#model .container .model-views .model-view .form-control :-ms-input-placeholder { /* Internet Explorer 10-11 */
+#model .container .model-views .model-view .form-control :-ms-input-placeholder,
+#forgot-pass .container .model-views .model-view .form-control :-ms-input-placeholder { /* Internet Explorer 10-11 */
    color: #999999;
 }
-#model .container .model-views .model-view>button {
+#model .container .model-views .model-view>button,
+#forgot-pass .container .model-views .model-view>button {
     width: 243px;
     height: 63px;
     display: block;
-    padding: 19px 100px;
+    /* padding: 19px 100px; */
     background: #EDB11B;
     color: #FFFFFF;
     font-size: 16px;
@@ -337,17 +354,19 @@ body {
     line-height: 25px;
     cursor: pointer;
 }
-#model .container .model-views .model-view>button.disable {
+#model .container .model-views .model-view>button.disable,
+#forgot-pass .container .model-views .model-view>button.disable {
     background: #999999;
 }
-#model .container .model-views .model-view>a {
+#model .container .model-views .model-view>a,
+#forgot-pass .container .model-views .model-view>a {
     display: block;
     margin-top: 28px;
     font-size: 14px;
     color: #818181;
     letter-spacing: 0;
 }
-#model .container .agreement {
+#model .container .agreement, #forgot-pass .container .agreement {
     margin-top: 28px;
     margin-right: 8px;
     font-size: 14px;
@@ -355,9 +374,9 @@ body {
     letter-spacing: 0;
     cursor: pointer;
 }
-#model .container .captchae span {
+#model .container .captchae span, #forgot-pass .container .captchae span {
     position: absolute;
-    top: 16px;
+    top: 18px;
     right: 10px;
     font-size: 12px;
     color: #388BE0;

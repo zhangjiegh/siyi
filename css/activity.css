@@ -1,17 +1,22 @@
 .list {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     flex-wrap: wrap;
     margin-top: 30px;
 }
 .list li {
     width: 386px;
     margin-bottom: 30px;
+    margin-right: 21px;
+}
+.list li:nth-child(3n) {
+    margin-right: 0;
 }
 .list li img {
     margin-bottom: 10px;
+    height: 288px;
 }
-.list li a {
+.list li a p {
     display: block;
     margin-bottom: 10px;
     font-size: 16px;
@@ -21,7 +26,7 @@
     text-overflow:ellipsis;
     white-space: nowrap;
 }
-.list li a:hover {
+.list li a:hover p {
     color: #ED8D1B;
 }
 .list li .time {
@@ -84,6 +89,7 @@
     color: #ffffff;
     font-size: 12px;
     letter-spacing: 0;
+    margin-top: -10px;
 }
 .list li .situation .status.doing {
     background-color: #F66A65;
@@ -93,4 +99,28 @@
 }
 .list li .situation .status.nobegin {
     background-color: #ED8D1B;
+}
+
+.action {
+    margin-top: 50px;
+    font-size: 0;
+}
+.action button {
+    margin-right: 20px;
+    width: 81px;
+    height: 40px;
+    background: #F0F0F0;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #999999;
+    letter-spacing: 0.11px;
+    outline: none;
+    cursor: pointer;
+}
+.action button.active {
+    background: #ED881B;
+    color: #FFFFFF;
+}
+.article {
+    display: none;
 }

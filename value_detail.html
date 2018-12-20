@@ -117,46 +117,22 @@
 
         <div class="time-select">
             <div class="active">分时</div>
-            <div>日</div>
-            <div>周</div>
-            <div>月</div>
-            <div>三月</div>
-            <div>年</div>
+            <div>15min</div>
+            <div>30min</div>
+            <div>1hour</div>
+            <div>4hour</div>
+            <div>1day</div>
+            <div>5day</div>
+            <div>1week</div>
+            <div>1mon</div>
         </div>
         <div class="chart-views">
-            <!--<div class="remark">
-                <div class="top">
-                    <img src="./img/close.png" alt="icon">
-                    <span>BTC/USDT, 1</span>
-                    <img src="./img/close.png" alt="icon">
-                    <span>开=5763.14</span>
-                    <span>高=5765.39</span>
-                    <span>低=5724.18</span>
-                    <span>收=5724.18</span>
-                </div>
-                <div style="top: 40px;">
-                    <span>MA(5, close, 0)</span>
-                    <img src="./img/close.png" alt="icon">
-                    <img src="./img/close.png" alt="icon">
-                </div>
-                <div style="top: 80px;">
-                    <span>MA(10, close, 0)</span>
-                    <img src="./img/close.png" alt="icon">
-                    <img src="./img/close.png" alt="icon">
-                </div>
-                <div style="top: 120px;">
-                    <span>MA(30, close, 0)</span>
-                    <img src="./img/close.png" alt="icon">
-                    <img src="./img/close.png" alt="icon">
-                </div>
-                <div style="top: 160px;">
-                    <span>MA(60, close, 0)</span>
-                    <img src="./img/close.png" alt="icon">
-                    <img src="./img/close.png" alt="icon">
-                </div>
-            </div>-->
-            <div id="hoursDiv" class="active" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv" style="height:600px;width: 1200px;"></div>
+            <div class="chart-view active">
+                <div id="hoursDiv" style="height:600px;width: 1200px;"></div>
+            </div>
+            <div class="chart-view">
+                <div id="dayDiv" style="height:600px;width: 1200px;"></div>
+            </div>
         </div>
     </div>
     <div class="footer">
@@ -191,7 +167,33 @@
     <div id="success-msg">
         <div>
             <img src="./img/registerandlogin_succeed .png" alt="registerandlogin_succeed">
-            注册成功！
+            <span></span>
+        </div>
+    </div>
+    <div id="forgot-pass">
+        <div class="container">
+            <img class="close-model" src="./img/close_model.png" alt="close_model">
+            <div class="model-tabs">
+                <h3>修改密码</h3>
+            </div>
+            <div class="model-views">
+                <div class="model-view active">
+                    <div class="form-control user">
+                        <input type="text" placeholder="输入手机号码或者电子邮箱">
+                    </div>
+                    <div class="form-control captchae">
+                        <input type="text" placeholder="验证码">
+                        <span>获取验证码</span>
+                    </div>
+                    <div class="form-control pass">
+                        <input type="text" placeholder="输入新密码">
+                    </div>
+                    <div class="form-control confirm-pass">
+                        <input type="text" placeholder="确认密码">
+                    </div>
+                    <button class="disable">修改密码</button>
+                </div>
+            </div>
         </div>
     </div>
     <div id="model">
@@ -213,7 +215,7 @@
                         <!-- <div class="close-icon"></div> -->
                     </div>
                     <button class="login disable">登录</button>
-                    <a href="#">忘记密码</a>
+                    <a class="forgot-pass" href="#">忘记密码</a>
                 </div>
                 <div class="model-view register-view">
                     <div class="form-control user">

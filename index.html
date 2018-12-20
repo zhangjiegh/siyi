@@ -37,7 +37,7 @@
     <div id="main">
         <ul class="bitcoin">
             <li>
-                <div class="icon"></div>
+                <div class="icon" style="background-image: url(./img/bitcoin.png);"></div>
                 <div class="content">
                     <div class="name">BTC-比特币</div>
                     <div class="money">￥54122.88</div>
@@ -73,15 +73,15 @@
             </li>
         </ul>
         <ul class="tabs">
-            <li class="active">自选</li>
-            <li>市值</li>
+            <li>自选</li>
+            <li class="active">市值</li>
             <li>火币</li>
             <li>币安</li>
             <li>OKEx</li>
             <li>历史最高价</li>
         </ul>
         <div class="tab-views">
-            <div class="view view-1 active">
+            <div class="view view-1">
                 <div class="content">
                     <img src="./img/home_add.png" alt="home_add">
                     <br>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="view view-2">
+            <div class="view view-2 active">
                 <table id="view-2" class="table-no-bordered"></table>
             </div>
             <div class="view view-3">
@@ -133,7 +133,33 @@
     <div id="success-msg">
         <div>
             <img src="./img/registerandlogin_succeed .png" alt="registerandlogin_succeed">
-            注册成功！
+            <span></span>
+        </div>
+    </div>
+    <div id="forgot-pass">
+        <div class="container">
+            <img class="close-model" src="./img/close_model.png" alt="close_model">
+            <div class="model-tabs">
+                <h3>修改密码</h3>
+            </div>
+            <div class="model-views">
+                <div class="model-view active">
+                    <div class="form-control user">
+                        <input type="text" placeholder="输入手机号码或者电子邮箱">
+                    </div>
+                    <div class="form-control captchae">
+                        <input type="text" placeholder="验证码">
+                        <span>获取验证码</span>
+                    </div>
+                    <div class="form-control pass">
+                        <input type="text" placeholder="输入新密码">
+                    </div>
+                    <div class="form-control confirm-pass">
+                        <input type="text" placeholder="确认密码">
+                    </div>
+                    <button class="disable">修改密码</button>
+                </div>
+            </div>
         </div>
     </div>
     <div id="model">
@@ -155,7 +181,7 @@
                         <!-- <div class="close-icon"></div> -->
                     </div>
                     <button class="login disable">登录</button>
-                    <a href="#">忘记密码</a>
+                    <a class="forgot-pass" href="#">忘记密码</a>
                 </div>
                 <div class="model-view register-view">
                     <div class="form-control user">

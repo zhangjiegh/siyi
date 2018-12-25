@@ -142,9 +142,8 @@ function getTop2() {
 
 
 function getHours() {
-    var lastClose = 5;
-    var times = 1526054400;
-    var oldprice = 5; // TODO 今天开盘价
+
+    var oldprice = 0;
     var maxValue = 0;// 最高价
     var minValue = 99999999999;// 最低价
     var highColor = '#FF0000';// 上涨颜色
@@ -152,182 +151,195 @@ function getHours() {
     var ktimeArray = [];// 分时的数据
     var anchor = []; // 分时的区间
     var yAxisNum = 3; // y轴线个数选择基数
-
     var normalColor = '#000000';// 正常颜色
-    for (var i = 0; i < 288; i++) {
-        time = Number(times + i * 300);
-        time = getLocalTime(time);
-        price = Math.max(oldprice + (Math.random() * 0.5 - Math.random() * 0.5),0.01);
 
-        oldprice = price;
-        items = {
-            name: time,// 时间
-            value: [time, price]
-            // 价格
-        };
+    var option ={
+        name:'BTC',
+        type:0,
 
-        if (maxValue < price) {
-            maxValue = price;
-        }
-        if (minValue > price) {
-            minValue = price;
-        }
-        ktimeArray.push(items);
-    }
+    };
 
+    $.ajax({
+        url: 'http://www.41caijing.com/index/get_detail_kline.html',
+        type: 'GET',
+        data:option,
+        success: function (data, textStatus, xhr) {
+            for (var i = 0; i < data.length; i++){
+                var info = xx[i]
+                var price = info.close
+                oldprice = price
+                items = {
+                    name: info.last_updated,// 时间
+                    value: [info.last_updated, price]
+                    // 价格
+                };
 
-    var date1 = getLocalTime(Number(times)).substring(0, 10) + " 00:00:00";
-    var date2 = getLocalTime(Number(times)).substring(0, 10) + " 23:59:59";
-    var endPrice = ktimeArray[ktimeArray.length - 1].value[1];
-
-    anchor = [{
-        name: date1,
-        value: [date1, lastClose]
-    }, {
-        name: date2,
-        value: [date2, endPrice]
-    }];
-
-
-    // 最大最小值根据和中间值的定义重新选择
-    if ((maxValue - lastClose) > (lastClose - minValue)) {
-        minValue = lastClose - (maxValue - lastClose);
-    } else {
-        maxValue = lastClose + (lastClose - minValue);
-    }
-    minValue = Math.max(minValue,0.01); // TODO 不一定需要
-    // 获取y轴间隔
-    if (maxValue == minValue) {
-        maxValue = maxValue * 1.1;
-        minValue = minValue * 0.9;
-    }
-    var yAxisSpan = (maxValue - minValue) / (yAxisNum - 1);
-    // 获取金额数组
-    var data = ktimeArray; //TODO 需要的数组
-    // console.log(data);
-    var option = {
-        backgroundColor: '#ffffff',
-        tooltip: {
-            trigger: 'axis',
-            formatter: function (param) {
-                param = param[0];
-                return [
-                    '时间: ' + getJustMin(param.name) + '<br/>',
-                    '金额: ' + param.value[1].toFixed(2) + '<br/>',
-                    '涨跌: '
-                    + ((param.value[1] - lastClose) * 100 / lastClose)
-                        .toFixed(2) + '%'].join('');
-            }
-
-        },
-
-        grid : {
-            top : 20,
-            bottom: 40,
-            left:40,
-            right:40,
-        },
-        xAxis: {
-            type : 'time',
-            splitLine : {
-                show : false
-            },
-            position : 'bottom',
-            splitNumber : 5,
-            axisLabel : {
-                margin:20,
-                interval : false,
-                formatter : function(value, index) {
-                    // 格式化成月/日，只在第一个刻度显示年份
-                    var date = new Date(value);
-                    date = date.Format('hh:mm');
-                    if (index > 0 && date == '23:59') {
-                        date = "24:00";
-                    }
-                    return date;
+                if (maxValue < price) {
+                    maxValue = price;
                 }
+                if (minValue > price) {
+                    minValue = price;
+                }
+                ktimeArray.push(items);
             }
-        },
-        yAxis: [
-            {
-                type : 'value',
-                position : 'left',
-                max : maxValue,
-                min : minValue,
-                interval : yAxisSpan,
-                splitLine: {
-                    show: true,
-                    interval:yAxisSpan,
-                    lineStyle: {
-                        // 使用深浅的间隔色
-                        color: ['', '#b6b6b6']
+
+            var lastClose = ktimeArray[0].value[1];// TODO 今天开盘价
+
+            var date1 = ktimeArray[0].name;
+            var date2 = ktimeArray[ktimeArray.length - 1];
+            var endPrice = ktimeArray[ktimeArray.length - 1].value[1];
+
+            anchor = [{
+                name: date1,
+                value: [date1, lastClose]
+            }, {
+                name: date2,
+                value: [date2, endPrice]
+            }];
+
+
+            // 最大最小值根据和中间值的定义重新选择
+            if ((maxValue - lastClose) > (lastClose - minValue)) {
+                minValue = lastClose - (maxValue - lastClose);
+            } else {
+                maxValue = lastClose + (lastClose - minValue);
+            }
+
+            // 获取y轴间隔
+            if (maxValue == minValue) {
+                maxValue = maxValue * 1.1;
+                minValue = minValue * 0.9;
+            }
+            var yAxisSpan = (maxValue - minValue) / (yAxisNum - 1);
+            // 获取金额数组
+            var data = ktimeArray; //TODO 需要的数组
+            var option = {
+                backgroundColor: '#ffffff',
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (param) {
+                        param = param[0];
+                        return [
+                            '时间: ' + getJustMin(param.name) + '<br/>',
+                            '金额: ' + param.value[1].toFixed(2) + '<br/>',
+                            '涨跌: '
+                            + ((param.value[1] - lastClose) * 100 / lastClose)
+                                .toFixed(2) + '%'].join('');
+                    }
+
+                },
+
+                grid : {
+                    top : 20,
+                    bottom: 40,
+                    left:80,
+                    right:40,
+                },
+                xAxis: {
+                    type : 'time',
+                    splitLine : {
+                        show : false
+                    },
+                    position : 'bottom',
+                    splitNumber : 5,
+                    axisLabel : {
+                        margin:20,
+                        interval : false,
+                        formatter : function(value, index) {
+                            // 格式化成月/日，只在第一个刻度显示年份
+                            var date = new Date(value);
+                            date = date.Format('hh:mm');
+                            if (index > 0 && date == '23:59') {
+                                date = "24:00";
+                            }
+                            return date;
+                        }
                     }
                 },
-                axisLabel: {
-                    formatter: function (value, index) {
-                        return value.toFixed(2);
-                    },
-                    textStyle: {
-                        color: function (value, index) {
-                            if (value > lastClose) {
-                                return highColor;
-                            } else if (value < lastClose) {
-                                return lowColor;
-                            } else {
-                                return normalColor;
+                yAxis: [
+                    {
+                        type : 'value',
+                        position : 'left',
+                        max : maxValue,
+                        min : minValue,
+                        interval : yAxisSpan,
+                        splitLine: {
+                            show: true,
+                            interval:yAxisSpan,
+                            lineStyle: {
+                                // 使用深浅的间隔色
+                                color: ['', '#b6b6b6']
                             }
                         },
-                        fontSize: 11
-                    }
-                }
-            },
-        ],
-        series: [{
-            name: '模拟数据',
-            type: 'line',
-            showSymbol: false,
-            hoverAnimation: false,
-            smooth: 'spline',
-            itemStyle: {
-                normal: {
-                    width:1,
-                    lineStyle: {
-                        width:1,
-                        color: '#818c98'
-                    }
-                }
-            },
-            areaStyle: {
-                origin: 'start',
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#ecf2fc'
+                        axisLabel: {
+                            formatter: function (value, index) {
+                                return value.toFixed(2);
+                            },
+                            textStyle: {
+                                color: function (value, index) {
+                                    if (value > lastClose) {
+                                        return highColor;
+                                    } else if (value < lastClose) {
+                                        return lowColor;
+                                    } else {
+                                        return normalColor;
+                                    }
+                                },
+                                fontSize: 11
+                            }
+                        }
+                    },
+                ],
+                series: [{
+                    name: '模拟数据',
+                    type: 'line',
+                    showSymbol: false,
+                    hoverAnimation: false,
+                    smooth: 'spline',
+                    itemStyle: {
+                        normal: {
+                            width:1,
+                            lineStyle: {
+                                width:1,
+                                color: '#818c98'
+                            }
+                        }
+                    },
+                    areaStyle: {
+                        origin: 'start',
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#ecf2fc'
+                        }, {
+                            offset: 1,
+                            color: '#FFFFFF'
+                        }])
+                    },
+                    data: data
                 }, {
-                    offset: 1,
-                    color: '#FFFFFF'
-                }])
-            },
-            data: data
-        }, {
-            name: '.anchor',
-            type: 'line',
-            showSymbol: false,
-            data: anchor,
-            itemStyle: {
-                normal: {
-                    opacity: 0
-                }
-            },
-            lineStyle: {
-                normal: {
-                    opacity: 0
-                }
+                    name: '.anchor',
+                    type: 'line',
+                    showSymbol: false,
+                    data: anchor,
+                    itemStyle: {
+                        normal: {
+                            opacity: 0
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            opacity: 0
+                        }
+                    }
+                }]
+            };
+            if (option && typeof option === "object") {
+                hoursDivChart.setOption(option, true);
             }
-        }]
-    };
-    if (option && typeof option === "object") {
-        hoursDivChart.setOption(option, true);
-    }
+        }
+    });
+
+
 }
 
 function getDay() {
@@ -335,158 +347,10 @@ function getDay() {
         date:0,
         name:'BTC',
         type:1,
-    }
+        chart:dayDivChart
+    };
     getDate(option,function (data) {
-        var data0 =splitData(data)
-        var option3 = {
-            backgroundColor: '#ffffff',
-
-            legend: {
-                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-                inactiveColor: '#777',
-                textStyle: {
-                    color: '#000'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                },
-                formatter: function (param) {
-                    var fdata = {
-                        open: {name: '开盘', value: 0},
-                        close: {name: '收盘', value: 0},
-                        lowest: {name: '最低', value: 0},
-                        highest: {name: '最高', value: 0},
-                        MA5: {name: 'MA5', value: 0},
-                        MA10: {name: 'MA10', value: 0},
-                        MA20: {name: 'MA20', value: 0},
-                        MA30: {name: 'MA30', value: 0},
-                    };
-
-                    // ['open', 'close', 'lowest', 'highest', 'volumn']
-                    // [1, 4, 3, 2]
-                    for (var i = 0; i < param.length; i++) {
-                        var info = param[i];
-                        if (info.seriesName === "日K") {
-                            fdata.open.value = info.data[1];
-                            fdata.close.value = info.data[4];
-                            fdata.lowest.value = info.data[3];
-                            fdata.highest.value = info.data[2]
-                        } else if (info.seriesName === fdata[info.seriesName].name) {
-                            fdata[info.seriesName].value = info.value
-                        }
-                    }
-
-
-                    var arr = [];
-                    var reg = /^[0-9,.]*$/; //^[-\+]?\d+(\.\d+)?$/;
-                    for (var obj in fdata) {
-                        if (reg.test(fdata[obj].value)) {
-                            fdata[obj].value = fdata[obj].value.toFixed(2)
-                        }
-                        arr.push(fdata[obj].name + ': ' + fdata[obj].value + '<br/>');
-                    }
-                    return arr.join("")
-
-                }
-            },
-
-
-            xAxis: {
-                type: 'category',
-                data: data0.categoryData,
-                axisLine: {lineStyle: {color: '#8392A5'}}
-            },
-            yAxis: {
-                scale: true,
-                axisLine: {lineStyle: {color: '#8392A5'}},
-                splitLine: {show: false}
-            },
-            grid : {
-                top : 20,
-                bottom: 40,
-                left:40,
-                right:40,
-            },
-            dataZoom: [{
-                type: 'inside'
-            }],
-            animation: false,
-            series: [
-                {
-                    type: 'candlestick',
-                    name: '日K',
-                    data: data0.values,
-                    itemStyle: {
-                        normal: {
-                            color: '#FD1050',
-                            color0: '#0CF49B',
-                            borderColor: '#FD1050',
-                            borderColor0: '#0CF49B'
-                        }
-                    }
-                },
-                {
-                    name: 'MA5',
-                    type: 'line',
-                    data: calculateMA(5, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA10',
-                    type: 'line',
-                    data: calculateMA(10, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA20',
-                    type: 'line',
-                    data: calculateMA(20, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA30',
-                    type: 'line',
-                    data: calculateMA(30, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                }
-            ]
-        };
-        if (option3 && typeof option3 === "object") {
-            dayDivChart.setOption(option3, true);
-        }
+        toData(option,data)
     })
 
 }
@@ -496,158 +360,10 @@ function getDay3() {
         date:1,
         name:'BTC',
         type:1,
+        chart:dayDivChart3
     }
     getDate(option,function (data) {
-        var data0 =splitData(data)
-        var option3 = {
-            backgroundColor: '#ffffff',
-
-            legend: {
-                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-                inactiveColor: '#777',
-                textStyle: {
-                    color: '#000'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                },
-                formatter: function (param) {
-                    var fdata = {
-                        open: {name: '开盘', value: 0},
-                        close: {name: '收盘', value: 0},
-                        lowest: {name: '最低', value: 0},
-                        highest: {name: '最高', value: 0},
-                        MA5: {name: 'MA5', value: 0},
-                        MA10: {name: 'MA10', value: 0},
-                        MA20: {name: 'MA20', value: 0},
-                        MA30: {name: 'MA30', value: 0},
-                    };
-
-                    // ['open', 'close', 'lowest', 'highest', 'volumn']
-                    // [1, 4, 3, 2]
-                    for (var i = 0; i < param.length; i++) {
-                        var info = param[i];
-                        if (info.seriesName === "日K") {
-                            fdata.open.value = info.data[1];
-                            fdata.close.value = info.data[4];
-                            fdata.lowest.value = info.data[3];
-                            fdata.highest.value = info.data[2]
-                        } else if (info.seriesName === fdata[info.seriesName].name) {
-                            fdata[info.seriesName].value = info.value
-                        }
-                    }
-
-
-                    var arr = [];
-                    var reg = /^[0-9,.]*$/; //^[-\+]?\d+(\.\d+)?$/;
-                    for (var obj in fdata) {
-                        if (reg.test(fdata[obj].value)) {
-                            fdata[obj].value = fdata[obj].value.toFixed(2)
-                        }
-                        arr.push(fdata[obj].name + ': ' + fdata[obj].value + '<br/>');
-                    }
-                    return arr.join("")
-
-                }
-            },
-
-
-            xAxis: {
-                type: 'category',
-                data: data0.categoryData,
-                axisLine: {lineStyle: {color: '#8392A5'}}
-            },
-            yAxis: {
-                scale: true,
-                axisLine: {lineStyle: {color: '#8392A5'}},
-                splitLine: {show: false}
-            },
-            grid : {
-                top : 20,
-                bottom: 40,
-                left:40,
-                right:40,
-            },
-            dataZoom: [{
-                type: 'inside'
-            }],
-            animation: false,
-            series: [
-                {
-                    type: 'candlestick',
-                    name: '日K',
-                    data: data0.values,
-                    itemStyle: {
-                        normal: {
-                            color: '#FD1050',
-                            color0: '#0CF49B',
-                            borderColor: '#FD1050',
-                            borderColor0: '#0CF49B'
-                        }
-                    }
-                },
-                {
-                    name: 'MA5',
-                    type: 'line',
-                    data: calculateMA(5, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA10',
-                    type: 'line',
-                    data: calculateMA(10, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA20',
-                    type: 'line',
-                    data: calculateMA(20, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA30',
-                    type: 'line',
-                    data: calculateMA(30, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                }
-            ]
-        };
-        if (option3 && typeof option3 === "object") {
-            dayDivChart3.setOption(option3, true);
-        }
+        toData(option,data)
     })
 
 }
@@ -656,158 +372,10 @@ function getDay4() {
         date:2,
         name:'BTC',
         type:1,
+        chart:dayDivChart4
     }
     getDate(option,function (data) {
-        var data0 =splitData(data)
-        var option3 = {
-            backgroundColor: '#ffffff',
-
-            legend: {
-                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-                inactiveColor: '#777',
-                textStyle: {
-                    color: '#000'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                },
-                formatter: function (param) {
-                    var fdata = {
-                        open: {name: '开盘', value: 0},
-                        close: {name: '收盘', value: 0},
-                        lowest: {name: '最低', value: 0},
-                        highest: {name: '最高', value: 0},
-                        MA5: {name: 'MA5', value: 0},
-                        MA10: {name: 'MA10', value: 0},
-                        MA20: {name: 'MA20', value: 0},
-                        MA30: {name: 'MA30', value: 0},
-                    };
-
-                    // ['open', 'close', 'lowest', 'highest', 'volumn']
-                    // [1, 4, 3, 2]
-                    for (var i = 0; i < param.length; i++) {
-                        var info = param[i];
-                        if (info.seriesName === "日K") {
-                            fdata.open.value = info.data[1];
-                            fdata.close.value = info.data[4];
-                            fdata.lowest.value = info.data[3];
-                            fdata.highest.value = info.data[2]
-                        } else if (info.seriesName === fdata[info.seriesName].name) {
-                            fdata[info.seriesName].value = info.value
-                        }
-                    }
-
-
-                    var arr = [];
-                    var reg = /^[0-9,.]*$/; //^[-\+]?\d+(\.\d+)?$/;
-                    for (var obj in fdata) {
-                        if (reg.test(fdata[obj].value)) {
-                            fdata[obj].value = fdata[obj].value.toFixed(2)
-                        }
-                        arr.push(fdata[obj].name + ': ' + fdata[obj].value + '<br/>');
-                    }
-                    return arr.join("")
-
-                }
-            },
-
-
-            xAxis: {
-                type: 'category',
-                data: data0.categoryData,
-                axisLine: {lineStyle: {color: '#8392A5'}}
-            },
-            yAxis: {
-                scale: true,
-                axisLine: {lineStyle: {color: '#8392A5'}},
-                splitLine: {show: false}
-            },
-            grid : {
-                top : 20,
-                bottom: 40,
-                left:40,
-                right:40,
-            },
-            dataZoom: [{
-                type: 'inside'
-            }],
-            animation: false,
-            series: [
-                {
-                    type: 'candlestick',
-                    name: '日K',
-                    data: data0.values,
-                    itemStyle: {
-                        normal: {
-                            color: '#FD1050',
-                            color0: '#0CF49B',
-                            borderColor: '#FD1050',
-                            borderColor0: '#0CF49B'
-                        }
-                    }
-                },
-                {
-                    name: 'MA5',
-                    type: 'line',
-                    data: calculateMA(5, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA10',
-                    type: 'line',
-                    data: calculateMA(10, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA20',
-                    type: 'line',
-                    data: calculateMA(20, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA30',
-                    type: 'line',
-                    data: calculateMA(30, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                }
-            ]
-        };
-        if (option3 && typeof option3 === "object") {
-            dayDivChart4.setOption(option3, true);
-        }
+        toData(option,data)
     })
 
 }
@@ -816,158 +384,10 @@ function getDay5() {
         date:3,
         name:'BTC',
         type:1,
+        chart:dayDivChart5
     }
     getDate(option,function (data) {
-        var data0 =splitData(data)
-        var option3 = {
-            backgroundColor: '#ffffff',
-
-            legend: {
-                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-                inactiveColor: '#777',
-                textStyle: {
-                    color: '#000'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                },
-                formatter: function (param) {
-                    var fdata = {
-                        open: {name: '开盘', value: 0},
-                        close: {name: '收盘', value: 0},
-                        lowest: {name: '最低', value: 0},
-                        highest: {name: '最高', value: 0},
-                        MA5: {name: 'MA5', value: 0},
-                        MA10: {name: 'MA10', value: 0},
-                        MA20: {name: 'MA20', value: 0},
-                        MA30: {name: 'MA30', value: 0},
-                    };
-
-                    // ['open', 'close', 'lowest', 'highest', 'volumn']
-                    // [1, 4, 3, 2]
-                    for (var i = 0; i < param.length; i++) {
-                        var info = param[i];
-                        if (info.seriesName === "日K") {
-                            fdata.open.value = info.data[1];
-                            fdata.close.value = info.data[4];
-                            fdata.lowest.value = info.data[3];
-                            fdata.highest.value = info.data[2]
-                        } else if (info.seriesName === fdata[info.seriesName].name) {
-                            fdata[info.seriesName].value = info.value
-                        }
-                    }
-
-
-                    var arr = [];
-                    var reg = /^[0-9,.]*$/; //^[-\+]?\d+(\.\d+)?$/;
-                    for (var obj in fdata) {
-                        if (reg.test(fdata[obj].value)) {
-                            fdata[obj].value = fdata[obj].value.toFixed(2)
-                        }
-                        arr.push(fdata[obj].name + ': ' + fdata[obj].value + '<br/>');
-                    }
-                    return arr.join("")
-
-                }
-            },
-
-
-            xAxis: {
-                type: 'category',
-                data: data0.categoryData,
-                axisLine: {lineStyle: {color: '#8392A5'}}
-            },
-            yAxis: {
-                scale: true,
-                axisLine: {lineStyle: {color: '#8392A5'}},
-                splitLine: {show: false}
-            },
-            grid : {
-                top : 20,
-                bottom: 40,
-                left:40,
-                right:40,
-            },
-            dataZoom: [{
-                type: 'inside'
-            }],
-            animation: false,
-            series: [
-                {
-                    type: 'candlestick',
-                    name: '日K',
-                    data: data0.values,
-                    itemStyle: {
-                        normal: {
-                            color: '#FD1050',
-                            color0: '#0CF49B',
-                            borderColor: '#FD1050',
-                            borderColor0: '#0CF49B'
-                        }
-                    }
-                },
-                {
-                    name: 'MA5',
-                    type: 'line',
-                    data: calculateMA(5, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA10',
-                    type: 'line',
-                    data: calculateMA(10, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA20',
-                    type: 'line',
-                    data: calculateMA(20, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA30',
-                    type: 'line',
-                    data: calculateMA(30, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                }
-            ]
-        };
-        if (option3 && typeof option3 === "object") {
-            dayDivChart5.setOption(option3, true);
-        }
+        toData(option,data)
     })
 
 }
@@ -977,166 +397,65 @@ function getDay6() {
         date:4,
         name:'BTC',
         type:1,
+        chart:dayDivChart6
     }
     getDate(option,function (data) {
-        var data0 =splitData(data)
-        var option3 = {
-            backgroundColor: '#ffffff',
-
-            legend: {
-                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-                inactiveColor: '#777',
-                textStyle: {
-                    color: '#000'
-                }
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                },
-                formatter: function (param) {
-                    var fdata = {
-                        open: {name: '开盘', value: 0},
-                        close: {name: '收盘', value: 0},
-                        lowest: {name: '最低', value: 0},
-                        highest: {name: '最高', value: 0},
-                        MA5: {name: 'MA5', value: 0},
-                        MA10: {name: 'MA10', value: 0},
-                        MA20: {name: 'MA20', value: 0},
-                        MA30: {name: 'MA30', value: 0},
-                    };
-
-                    // ['open', 'close', 'lowest', 'highest', 'volumn']
-                    // [1, 4, 3, 2]
-                    for (var i = 0; i < param.length; i++) {
-                        var info = param[i];
-                        if (info.seriesName === "日K") {
-                            fdata.open.value = info.data[1];
-                            fdata.close.value = info.data[4];
-                            fdata.lowest.value = info.data[3];
-                            fdata.highest.value = info.data[2]
-                        } else if (info.seriesName === fdata[info.seriesName].name) {
-                            fdata[info.seriesName].value = info.value
-                        }
-                    }
-
-
-                    var arr = [];
-                    var reg = /^[0-9,.]*$/; //^[-\+]?\d+(\.\d+)?$/;
-                    for (var obj in fdata) {
-                        if (reg.test(fdata[obj].value)) {
-                            fdata[obj].value = fdata[obj].value.toFixed(2)
-                        }
-                        arr.push(fdata[obj].name + ': ' + fdata[obj].value + '<br/>');
-                    }
-                    return arr.join("")
-
-                }
-            },
-
-
-            xAxis: {
-                type: 'category',
-                data: data0.categoryData,
-                axisLine: {lineStyle: {color: '#8392A5'}}
-            },
-            yAxis: {
-                scale: true,
-                axisLine: {lineStyle: {color: '#8392A5'}},
-                splitLine: {show: false}
-            },
-            grid : {
-                top : 20,
-                bottom: 40,
-                left:40,
-                right:40,
-            },
-            dataZoom: [{
-                type: 'inside'
-            }],
-            animation: false,
-            series: [
-                {
-                    type: 'candlestick',
-                    name: '日K',
-                    data: data0.values,
-                    itemStyle: {
-                        normal: {
-                            color: '#FD1050',
-                            color0: '#0CF49B',
-                            borderColor: '#FD1050',
-                            borderColor0: '#0CF49B'
-                        }
-                    }
-                },
-                {
-                    name: 'MA5',
-                    type: 'line',
-                    data: calculateMA(5, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA10',
-                    type: 'line',
-                    data: calculateMA(10, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA20',
-                    type: 'line',
-                    data: calculateMA(20, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                },
-                {
-                    name: 'MA30',
-                    type: 'line',
-                    data: calculateMA(30, data0),
-                    smooth: true,
-                    showSymbol: false,
-                    lineStyle: {
-                        normal: {
-                            width: 1
-                        }
-                    }
-                }
-            ]
-        };
-        if (option3 && typeof option3 === "object") {
-            dayDivChart6.setOption(option3, true);
-        }
+        toData(option,data)
     })
 
-    var data0 =splitData(update())
+
+}
+
+function getDate(data,cb) {
+    $.ajax({
+        url: 'http://www.41caijing.com/index/get_detail_kline.html',
+        type: 'GET',
+        data: {
+            date: data.date || '0',
+            name: data.name || 'BTC',
+            type: data.type || 1,
+        },
+        success: function (data, textStatus, xhr) {
+            cb && cb(data)
+        }
+    });
+
+
+    /*var list =update(null,data.date)
+    cb && cb(list)*/
+}
+function update(data,num) {
+
+    if (data == null) {
+        data = cc(num)
+    }
+
+    var list = data.data.quote;
+    var newlist =[];
+    // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+    for (var i = 0;i<list.length;i++){
+        var info = list[i];
+        newlist.push([info.last_updated.toString().substring(0,10),
+            info.open,
+            info.close,
+            info.low,
+            info.high,
+            info.pricema7,
+            info.pricema15,
+            info.pricema30,
+        ])
+    }
+    return newlist
+}
+
+
+function toData(option,data) {
+    var data0 =splitData(data)
     var option3 = {
         backgroundColor: '#ffffff',
 
         legend: {
-            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            data: ['日K', 'MA7', 'MA15', 'MA30'],
             inactiveColor: '#777',
             textStyle: {
                 color: '#000'
@@ -1159,9 +478,8 @@ function getDay6() {
                     close: {name: '收盘', value: 0},
                     lowest: {name: '最低', value: 0},
                     highest: {name: '最高', value: 0},
-                    MA5: {name: 'MA5', value: 0},
-                    MA10: {name: 'MA10', value: 0},
-                    MA20: {name: 'MA20', value: 0},
+                    MA7: {name: 'MA7', value: 0},
+                    MA15: {name: 'MA15', value: 0},
                     MA30: {name: 'MA30', value: 0},
                 };
 
@@ -1175,7 +493,7 @@ function getDay6() {
                         fdata.lowest.value = info.data[3];
                         fdata.highest.value = info.data[2]
                     } else if (info.seriesName === fdata[info.seriesName].name) {
-                        fdata[info.seriesName].value = info.value
+                        fdata[info.seriesName].value = info.value ||'-'
                     }
                 }
 
@@ -1229,9 +547,9 @@ function getDay6() {
                 }
             },
             {
-                name: 'MA5',
+                name: 'MA7',
                 type: 'line',
-                data: calculateMA(5, data0),
+                data: data0.pricema7,
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
@@ -1241,21 +559,9 @@ function getDay6() {
                 }
             },
             {
-                name: 'MA10',
+                name: 'MA15',
                 type: 'line',
-                data: calculateMA(10, data0),
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    normal: {
-                        width: 1
-                    }
-                }
-            },
-            {
-                name: 'MA20',
-                type: 'line',
-                data: calculateMA(20, data0),
+                data: data0.pricema15,
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
@@ -1267,7 +573,7 @@ function getDay6() {
             {
                 name: 'MA30',
                 type: 'line',
-                data: calculateMA(30, data0),
+                data: data0.pricema30,
                 smooth: true,
                 showSymbol: false,
                 lineStyle: {
@@ -1275,57 +581,41 @@ function getDay6() {
                         width: 1
                     }
                 }
-            }
+            },
+
         ]
     };
     if (option3 && typeof option3 === "object") {
-        dayDivChart6.setOption(option3, true);
+        option.chart.setOption(option3, true);
     }
 }
-/**
- *
- */
-//getDate({});
-function getDate(data,cb) {
-    $.ajax({
-        url: 'http://www.41caijing.com/index/get_detail_kline.html',
-        type: 'GET',
-        data: {
-            date: data.date || '0',
-            name: data.name || 'BTC',
-            type: data.type || 1,
-        },
-        success: function (data, textStatus, xhr) {
-            var list =update(data)
-            cb && cb(list)
-        }
-    });
 
+function splitData(rawData) {
+    var categoryData = [];
+    var values = []
+    var pricema7 =[]
+    var pricema15 =[]
+    var pricema30 =[]
 
-    var list =update(null,data.date)
-    cb && cb(list)
-}
-function update(data,num) {
+    for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        console.log(rawData[i])
+        values.push([rawData[i][0],rawData[i][1],rawData[i][2],rawData[i][3]])
+        pricema7.push(rawData[i][4])
+        pricema15.push(rawData[i][5])
+        pricema30.push(rawData[i][6])
 
-    if (data == null) {
-        data = cc(num)
     }
-
-    var list = data.data.quote;
-    var newlist =[];
-    // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
-    for (var i = 0;i<list.length;i++){
-        var info = list[i];
-        newlist.push([info.last_updated.toString().substring(0,10),
-            info.open,
-            info.close,
-            info.low,
-            info.high,
-
-        ])
-    }
-    return newlist
+    return {
+        categoryData: categoryData,
+        values: values,
+        pricema7:pricema7,
+        pricema15:pricema15,
+        pricema30:pricema30,
+    };
 }
+
+// TODO 测试数据  通过请删除
 function cc(num) {
 
     var data;
@@ -1340,30 +630,4 @@ function cc(num) {
     return data
 }
 
-function calculateMA(dayCount, data) {
-    var result = [];
-    for (var i = 0, len = data.values.length; i < len; i++) {
-        if (i < dayCount) {
-            result.push('-');
-            continue;
-        }
-        var sum = 0;
-        for (var j = 0; j < dayCount; j++) {
-            sum += data.values[i - j][1];
-        }
-        result.push(sum / dayCount);
-    }
-    return result;
-}
-function splitData(rawData) {
-    var categoryData = [];
-    var values = []
-    for (var i = 0; i < rawData.length; i++) {
-        categoryData.push(rawData[i].splice(0, 1)[0]);
-        values.push(rawData[i])
-    }
-    return {
-        categoryData: categoryData,
-        values: values
-    };
-}
+

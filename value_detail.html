@@ -117,26 +117,36 @@
 
         <div class="time-select">
             <div class="active">分时</div>
-            <div>15min</div>
-            <div>30min</div>
-            <div>1hour</div>
-            <div>4hour</div>
-            <div>1day</div>
-            <div>5day</div>
-            <div>1week</div>
-            <div>1mon</div>
+            <div>日</div>
+            <div>周</div>
+            <div>月</div>
+            <div>三月</div>
+            <div>年</div>
+
         </div>
         <div class="chart-views">
 
-            <div id="hoursDiv" class="active" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv"  class="chart-view"  style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv3" class="chart-view" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv4" class="chart-view" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv5" class="chart-view" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv6" class="chart-view" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv7" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="hoursDiv" class="chart-view active" style="height:600px;width: 1200px;">
+
+            </div>
+            <div id="dayDiv"  class="chart-view" style="height:600px;width: 1200px;">
+
+            </div>
+            <div id="dayDiv3" class="chart-view" style="height:600px;width: 1200px;">
+
+            </div>
+            <div id="dayDiv4" class="chart-view" style="height:600px;width: 1200px;">
+
+            </div>
+            <div id="dayDiv5" class="chart-view" style="height:600px;width: 1200px;">
+
+            </div>
+            <div id="dayDiv6" class="chart-view" style="height:600px;width: 1200px;">
+
+            </div>
+           <!-- <div id="dayDiv7" class="chart-view" style="height:600px;width: 1200px;"></div>
             <div id="dayDiv8" class="chart-view" style="height:600px;width: 1200px;"></div>
-            <div id="dayDiv9" class="chart-view" style="height:600px;width: 1200px;"></div>
+            <div id="dayDiv9" class="chart-view" style="height:600px;width: 1200px;"></div>-->
         </div>
     </div>
     <div class="footer">
@@ -266,7 +276,6 @@
         getTop2();
         getHours();
 
-
         $('#main .time-select>div').on('click', function () {
             $(this).addClass('active').siblings('div').removeClass('active');
             var index = $(this).index();
@@ -290,7 +299,7 @@
                 case 5:
                     getDay6();
                     break;
-                case 6:
+             /*   case 6:
                     getDay7();
                     break;
                 case 7:
@@ -298,7 +307,7 @@
                     break;
                 case 8:
                     getDay9();
-                    break;
+                    break;*/
             }
         });
     </script>

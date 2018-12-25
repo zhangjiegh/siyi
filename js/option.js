@@ -153,19 +153,194 @@ function getHours() {
     var yAxisNum = 3; // y轴线个数选择基数
     var normalColor = '#000000';// 正常颜色
 
+
+
+    var data = xxx()
+    for (var i = 0; i < data.length; i++){
+        var info = data[i]
+        var price = info.close
+        oldprice = price
+        items = {
+            name: info.last_updated,// 时间
+            value: [info.last_updated, price]
+            // 价格
+        };
+
+        if (maxValue < price) {
+            maxValue = price;
+        }
+        if (minValue > price) {
+            minValue = price;
+        }
+        ktimeArray.push(items);
+    }
+
+    var lastClose = ktimeArray[0].value[1];// TODO 今天开盘价
+
+    var date1 = ktimeArray[0].name;
+    var date2 = ktimeArray[ktimeArray.length - 1].name;
+    var endPrice = ktimeArray[ktimeArray.length - 1].value[1];
+
+    anchor = [{
+        name: date1,
+        value: [date1, lastClose]
+    }, {
+        name: date2,
+        value: [date2, endPrice]
+    }];
+
+
+    // 最大最小值根据和中间值的定义重新选择
+    if ((maxValue - lastClose) > (lastClose - minValue)) {
+        minValue = lastClose - (maxValue - lastClose);
+    } else {
+        maxValue = lastClose + (lastClose - minValue);
+    }
+
+    // 获取y轴间隔
+    if (maxValue == minValue) {
+        maxValue = maxValue * 1.1;
+        minValue = minValue * 0.9;
+    }
+    var yAxisSpan = (maxValue - minValue) / (yAxisNum - 1);
+    // 获取金额数组
+    var data = ktimeArray; //TODO 需要的数组
+    var option = {
+        backgroundColor: '#ffffff',
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (param) {
+                param = param[0];
+                return [
+                    '时间: ' + getJustMin(param.name) + '<br/>',
+                    '金额: ' + param.value[1].toFixed(2) + '<br/>',
+                    '涨跌: '
+                    + ((param.value[1] - lastClose) * 100 / lastClose)
+                        .toFixed(2) + '%'].join('');
+            }
+
+        },
+
+        grid : {
+            top : 20,
+            bottom: 40,
+            left:80,
+            right:40,
+        },
+        xAxis: {
+            type : 'time',
+            splitLine : {
+                show : false
+            },
+            position : 'bottom',
+            splitNumber : 5,
+            axisLabel : {
+                margin:20,
+                interval : false,
+                formatter : function(value, index) {
+                    // 格式化成月/日，只在第一个刻度显示年份
+                    var date = new Date(value);
+                    date = date.Format('hh:mm');
+                    if (index > 0 && date == '23:59') {
+                        date = "24:00";
+                    }
+                    return date;
+                }
+            }
+        },
+        yAxis: [
+            {
+                type : 'value',
+                position : 'left',
+                max : maxValue,
+                min : minValue,
+                interval : yAxisSpan,
+                splitLine: {
+                    show: true,
+                    interval:yAxisSpan,
+                    lineStyle: {
+                        // 使用深浅的间隔色
+                        color: ['', '#b6b6b6']
+                    }
+                },
+                axisLabel: {
+                    formatter: function (value, index) {
+                        return value.toFixed(2);
+                    },
+                    textStyle: {
+                        color: function (value, index) {
+                            if (value > lastClose) {
+                                return highColor;
+                            } else if (value < lastClose) {
+                                return lowColor;
+                            } else {
+                                return normalColor;
+                            }
+                        },
+                        fontSize: 11
+                    }
+                }
+            },
+        ],
+        series: [{
+            name: '模拟数据',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            smooth: 'spline',
+            itemStyle: {
+                normal: {
+                    width:1,
+                    lineStyle: {
+                        width:1,
+                        color: '#818c98'
+                    }
+                }
+            },
+            areaStyle: {
+                origin: 'start',
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#ecf2fc'
+                }, {
+                    offset: 1,
+                    color: '#FFFFFF'
+                }])
+            },
+            data: data
+        }, {
+            name: '.anchor',
+            type: 'line',
+            showSymbol: false,
+            data: anchor,
+            itemStyle: {
+                normal: {
+                    opacity: 0
+                }
+            },
+            lineStyle: {
+                normal: {
+                    opacity: 0
+                }
+            }
+        }]
+    };
+    if (option && typeof option === "object") {
+        hoursDivChart.setOption(option, true);
+    }
+
     var option ={
         name:'BTC',
         type:0,
 
     };
-
     $.ajax({
         url: 'http://www.41caijing.com/index/get_detail_kline.html',
         type: 'GET',
         data:option,
         success: function (data, textStatus, xhr) {
             for (var i = 0; i < data.length; i++){
-                var info = xx[i]
+                var info = data[i]
                 var price = info.close
                 oldprice = price
                 items = {
@@ -416,21 +591,24 @@ function getDate(data,cb) {
             type: data.type || 1,
         },
         success: function (data, textStatus, xhr) {
+            console.log(data)
             var list =update(data)
+            console.log(list)
             cb && cb(list)
         }
     });
 
 
-    /*var list =update(null,data.date)
-    cb && cb(list)*/
+    var list =update(null,data.date)
+    cb && cb(list)
 }
-function update(data) {
+function update(data,num) {
 
-    /*if (data == null) {
+    if (data == null) {
         data = cc(num)
-    }*/
+    }
 
+    // 应该改成  var list = data
     var list = data.data.quote;
     var newlist =[];
     // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
@@ -631,4 +809,8 @@ function cc(num) {
     return data
 }
 
+function xxx() {
+    var data =[{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 10:24:01","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.04846060161628,"id":"5c21a819e3bb301e0cb3781d","close":3883.261,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 10:29:01","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.050921490443579,"id":"5c21a83de3bb301e0cb3880c","close":3873.218,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 10:44:01","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.050239895280359,"id":"5c21a84ae3bb301e0cb38df6","close":3875.999,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 11:04:00","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.050079307616372,"id":"5c21a857e3bb301e0cb393e1","close":3876.655,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 11:14:00","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.048518606436798,"id":"5c21a864e3bb301e0cb399c8","close":3883.024,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 11:29:00","price":3979.688,"name":"Bitcoin","sign":"USD","change_daily":-0.04981850945337,"id":"5c21a872e3bb301e0cb39fad","close":3877.719,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 11:44:01","price":3978.674,"name":"Bitcoin","sign":"USD","change_daily":-0.052252381253773,"id":"5c21aa932d5893499c55933a","close":3867.786,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 11:59:01","price":3949.084,"name":"Bitcoin","sign":"USD","change_daily":-0.066753400258712,"id":"5c21acea2d5893499c559920","close":3808.607,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 12:14:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.066175658527367,"id":"5c21b19b2d5893499c559f1b","close":3810.965,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 12:29:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.066569874794907,"id":"5c21b3f32d5893499c55a587","close":3809.356,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 12:49:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.065210833190247,"id":"5c21bd7e2d5893499c55ad0c","close":3814.903,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 12:59:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.064767025920769,"id":"5c21bd802d5893499c55b2f0","close":3816.714,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 13:14:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.062337195739295,"id":"5c21e46a2d5893499c55c1c5","close":3826.63,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 13:29:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.05834594660855,"id":"5c21e46b2d5893499c55c7aa","close":3842.918,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 13:44:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.058593709372681,"id":"5c21e46d2d5893499c55cd8e","close":3841.907,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 13:59:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.059539824530952,"id":"5c21e4702d5893499c55d373","close":3838.046,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 14:14:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.05921168345984,"id":"5c21e4722d5893499c55d958","close":3839.385,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 14:29:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.062196043820903,"id":"5c21e4752d5893499c55df3d","close":3827.206,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 14:44:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.062710426716328,"id":"5c21e4782d5893499c55e521","close":3825.107,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 14:59:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.062157974595225,"id":"5c21e47b2d5893499c55eb06","close":3827.361,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 15:14:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.058544302434548,"id":"5c21e47e2d5893499c55f0eb","close":3842.109,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 15:29:02","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.059472972251378,"id":"5c21e4812d5893499c55f6d0","close":3838.319,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 15:44:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.056682365099368,"id":"5c21e4842d5893499c55fcb5","close":3849.708,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 15:59:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.061060238496019,"id":"5c21e5b3e3bb30274c8f6864","close":3831.841,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 16:14:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.062260817439203,"id":"5c21ed92e3bb30063c740e01","close":3826.942,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 16:29:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.063867094747483,"id":"5c21ed9fe3bb30063c7413f5","close":3820.386,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 16:44:00","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.064709158469968,"id":"5c21f0e4e3bb30063c741a50","close":3816.95,"open":4081.03,"slug":"bitcoin"},{"volume":2147483.647,"symbol":"BTC","last_updated":"2018-12-25 16:59:01","price":3946.509,"name":"Bitcoin","sign":"USD","change_daily":-0.06764125217889,"id":"5c21f33ce3bb302f98cffe5d","close":3804.984,"open":4081.03,"slug":"bitcoin"}]
+    return data
+}
 

@@ -186,7 +186,7 @@ function getHours() {
             var lastClose = ktimeArray[0].value[1];// TODO 今天开盘价
 
             var date1 = ktimeArray[0].name;
-            var date2 = ktimeArray[ktimeArray.length - 1];
+            var date2 = ktimeArray[ktimeArray.length - 1].name;
             var endPrice = ktimeArray[ktimeArray.length - 1].value[1];
 
             anchor = [{
@@ -416,7 +416,8 @@ function getDate(data,cb) {
             type: data.type || 1,
         },
         success: function (data, textStatus, xhr) {
-            cb && cb(data)
+            var list =update(data)
+            cb && cb(list)
         }
     });
 
@@ -424,11 +425,11 @@ function getDate(data,cb) {
     /*var list =update(null,data.date)
     cb && cb(list)*/
 }
-function update(data,num) {
+function update(data) {
 
-    if (data == null) {
+    /*if (data == null) {
         data = cc(num)
-    }
+    }*/
 
     var list = data.data.quote;
     var newlist =[];

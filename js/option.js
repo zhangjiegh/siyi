@@ -154,181 +154,6 @@ function getHours() {
     var normalColor = '#000000';// 正常颜色
 
 
-
-    var data = xxx()
-    for (var i = 0; i < data.length; i++){
-        var info = data[i]
-        var price = info.close
-        oldprice = price
-        items = {
-            name: info.last_updated,// 时间
-            value: [info.last_updated, price]
-            // 价格
-        };
-
-        if (maxValue < price) {
-            maxValue = price;
-        }
-        if (minValue > price) {
-            minValue = price;
-        }
-        ktimeArray.push(items);
-    }
-
-    var lastClose = ktimeArray[0].value[1];// TODO 今天开盘价
-
-    var date1 = ktimeArray[0].name;
-    var date2 = ktimeArray[ktimeArray.length - 1].name;
-    var endPrice = ktimeArray[ktimeArray.length - 1].value[1];
-
-    anchor = [{
-        name: date1,
-        value: [date1, lastClose]
-    }, {
-        name: date2,
-        value: [date2, endPrice]
-    }];
-
-
-    // 最大最小值根据和中间值的定义重新选择
-    if ((maxValue - lastClose) > (lastClose - minValue)) {
-        minValue = lastClose - (maxValue - lastClose);
-    } else {
-        maxValue = lastClose + (lastClose - minValue);
-    }
-
-    // 获取y轴间隔
-    if (maxValue == minValue) {
-        maxValue = maxValue * 1.1;
-        minValue = minValue * 0.9;
-    }
-    var yAxisSpan = (maxValue - minValue) / (yAxisNum - 1);
-    // 获取金额数组
-    var data = ktimeArray; //TODO 需要的数组
-    var option = {
-        backgroundColor: '#ffffff',
-        tooltip: {
-            trigger: 'axis',
-            formatter: function (param) {
-                param = param[0];
-                return [
-                    '时间: ' + getJustMin(param.name) + '<br/>',
-                    '金额: ' + param.value[1].toFixed(2) + '<br/>',
-                    '涨跌: '
-                    + ((param.value[1] - lastClose) * 100 / lastClose)
-                        .toFixed(2) + '%'].join('');
-            }
-
-        },
-
-        grid : {
-            top : 20,
-            bottom: 40,
-            left:80,
-            right:40,
-        },
-        xAxis: {
-            type : 'time',
-            splitLine : {
-                show : false
-            },
-            position : 'bottom',
-            splitNumber : 5,
-            axisLabel : {
-                margin:20,
-                interval : false,
-                formatter : function(value, index) {
-                    // 格式化成月/日，只在第一个刻度显示年份
-                    var date = new Date(value);
-                    date = date.Format('hh:mm');
-                    if (index > 0 && date == '23:59') {
-                        date = "24:00";
-                    }
-                    return date;
-                }
-            }
-        },
-        yAxis: [
-            {
-                type : 'value',
-                position : 'left',
-                max : maxValue,
-                min : minValue,
-                interval : yAxisSpan,
-                splitLine: {
-                    show: true,
-                    interval:yAxisSpan,
-                    lineStyle: {
-                        // 使用深浅的间隔色
-                        color: ['', '#b6b6b6']
-                    }
-                },
-                axisLabel: {
-                    formatter: function (value, index) {
-                        return value.toFixed(2);
-                    },
-                    textStyle: {
-                        color: function (value, index) {
-                            if (value > lastClose) {
-                                return highColor;
-                            } else if (value < lastClose) {
-                                return lowColor;
-                            } else {
-                                return normalColor;
-                            }
-                        },
-                        fontSize: 11
-                    }
-                }
-            },
-        ],
-        series: [{
-            name: '模拟数据',
-            type: 'line',
-            showSymbol: false,
-            hoverAnimation: false,
-            smooth: 'spline',
-            itemStyle: {
-                normal: {
-                    width:1,
-                    lineStyle: {
-                        width:1,
-                        color: '#818c98'
-                    }
-                }
-            },
-            areaStyle: {
-                origin: 'start',
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#ecf2fc'
-                }, {
-                    offset: 1,
-                    color: '#FFFFFF'
-                }])
-            },
-            data: data
-        }, {
-            name: '.anchor',
-            type: 'line',
-            showSymbol: false,
-            data: anchor,
-            itemStyle: {
-                normal: {
-                    opacity: 0
-                }
-            },
-            lineStyle: {
-                normal: {
-                    opacity: 0
-                }
-            }
-        }]
-    };
-    if (option && typeof option === "object") {
-        hoursDivChart.setOption(option, true);
-    }
-
     var option ={
         name:'BTC',
         type:0,
@@ -593,23 +418,13 @@ function getDate(data,cb) {
         success: function (data, textStatus, xhr) {
             console.log(data)
             var list =update(data)
-            console.log(list)
             cb && cb(list)
         }
     });
 
-
-    var list =update(null,data.date)
-    cb && cb(list)
 }
-function update(data,num) {
-
-    if (data == null) {
-        data = cc(num)
-    }
-
-    // 应该改成  var list = data
-    var list = data.data.quote;
+function update(data) {
+    var list = data;
     var newlist =[];
     // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
     for (var i = 0;i<list.length;i++){
